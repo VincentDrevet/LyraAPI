@@ -1,0 +1,31 @@
+services:
+  lyra-mqtt:
+    build:
+      context: externals/mosquitto
+      dockerfile: Dockerfile
+    container_name: lyra-mqtt
+    networks:
+      LyraNet:
+    ports:
+      - 1883:1883
+      - 8080:8080
+    volumes:
+      - mosquitto_data:/mosquitto/data:rw
+      - mosquitto_logs:/mosquitto/logs:rw
+      - ./externals/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:rw
+  lyra-api:
+    build: .
+    container_name: lyra-api
+    networks:
+      LyraNet:
+    ports:
+      - 8000:8000
+    depends_on:
+      - lyra-mqtt
+
+networks:
+  LyraNet:
+
+volumes:
+  mosquitto_logs:
+  mosquitto_data:

@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from starlette.staticfiles import StaticFiles
+
 from app.routers import broker
 from contextlib import asynccontextmanager
 from app.db.database import Base, engine
@@ -14,6 +16,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-
-
 app.include_router(broker.router)
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
