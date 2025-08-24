@@ -18,4 +18,4 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(broker.router)
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/", StaticFiles(directory="app/static", html=True), name="static")
